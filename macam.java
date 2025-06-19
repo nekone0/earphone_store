@@ -4,30 +4,35 @@ public class macam {
 
     static String inputString(String question)
     {
-        System.out.print(question);
+        System.out.println(question);
         String nama = a.nextLine();
         return nama;
     }
 
     static Integer inputInt(String question)
     {
-        System.out.print(question);
+        System.out.println(question);
         Integer angka = a.nextInt();
         return angka;
     }
     static void lanjut()
     {
-        a.next();
+        a.nextLine();
     }
 
     static Double inputDou(Double question)
     {
-        System.out.print(question);
+        System.out.println(question);
         Double angka2 = a.nextDouble();
         return angka2;
     }
 
     static void write(String quest)
+    {
+        System.out.println(quest);
+    }
+
+    static void writeNum(Integer quest)
     {
         System.out.println(quest);
     }

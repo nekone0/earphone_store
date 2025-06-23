@@ -3,6 +3,7 @@ import java.util.*;
 public class toko_earphone {
     static ArrayList<String> toko = new ArrayList<String>();
     static ArrayList<Integer> price = new ArrayList<Integer>();
+    static ArrayList<String> cart = new ArrayList<String>();
 
     static Scanner a = new Scanner(System.in);
 
@@ -17,10 +18,29 @@ public class toko_earphone {
         {
             for (int a = 0; a < toko.size(); a++)
             {
-                macam.write((a+1)+ ". " + toko.get(a) + " - " + price.get(a));
+                macam.write((a+1)+ ". " + toko.get(a) + " - $" + price.get(a));
             }
         }
         macam.write("---------------");
+    }
+
+    public static void cart(int total)
+    {
+        macam.write("Cart\n-------------------");
+        if (cart.size() == 0)
+        {
+            macam.write("Kosong");
+        }
+        else
+        {
+            int i = 1;
+            for (int a = 0; a < cart.size(); a = a+2)
+            {
+                macam.write((i) + ". " + cart.get(a) + " - $" + cart.get(a+1));
+                i++;
+            }
+            macam.write("Total : $" + total);
+        }
     }
     public static void main(String[] args)
     {
@@ -49,6 +69,7 @@ public class toko_earphone {
                             if (act2 == 1)
                             {
                                 macam.lanjut();
+                                macam.clear();
                                 continue;
                             }
                             else if (act2 == 2)
@@ -78,6 +99,7 @@ public class toko_earphone {
                                 int act3 = macam.inputInt("1. Continue\n2. Exit");
                                 if (act3 == 1)
                                 {
+                                    macam.clear();
                                     continue;
                                 }
                                 else if (act3 == 2)
@@ -93,6 +115,7 @@ public class toko_earphone {
                                 int act3 = macam.inputInt("1. Continue\n2. Exit");
                                 if (act3 == 1)
                                 {
+                                    macam.clear();
                                     continue;
                                 }
                                 else if (act3 == 2)
@@ -130,6 +153,7 @@ public class toko_earphone {
                             int act2 = macam.inputInt("1. Continue\n2. Exit");
                             if (act2 == 1)
                             {
+                                macam.clear();
                                 continue;
                             }
                             else if (act2 == 2)
@@ -149,8 +173,10 @@ public class toko_earphone {
             else if (user == 2)
             {
                 int atm = 0;
+                int total = 0;
                 while (true)
                 {
+                    macam.clear();
                     macam.write("Welcome\n1. ATM\n2. Shop\n3. Back");
                     int act1 = macam.inputInt("Pick an action : ");
 
@@ -196,7 +222,7 @@ public class toko_earphone {
                             macam.clear();
                             macam.write("Money : $"+atm);
                             macam.write("Welcome to the shop\n----------");
-                            macam.write("1. Buy\n2. Exit");
+                            macam.write("1. Buy\n2. See cart\n3. Exit");
                             int act2 = macam.inputInt("Pick an action : ");
                             if (act2 == 1)
                             {
@@ -206,13 +232,56 @@ public class toko_earphone {
                                     macam.write("Money : $"+atm);
                                     list();
                                     int rak = macam.inputInt("Pilih rak yang akan dibeli : ");
-                                    atm = atm - price.get(rak-1);
-                                    int act3 = macam.inputInt("1. Continue\n2. Exit");
+                                    total = total + price.get(rak-1);
+                                    String i_p = Integer.toString(price.get(rak-1));
+                                    cart.add(toko.get(rak-1));
+                                    cart.add(i_p);
+
+                                    cart(total);
+
+                                    int act3 = macam.inputInt("1. Continue\n2. Checkout\n3. Exit");
                                     if (act3 == 1)
                                     {
+                                        macam.clear();
                                         continue;
                                     }
                                     else if (act3 == 2)
+                                    {
+                                        macam.write("Money : "+ atm);
+                                        int pay = macam.inputInt("Input the amount you want to pay : ");
+                                        if (atm >= pay)
+                                        {
+                                            atm = atm - pay;
+                                            if (pay >= total)
+                                            {
+                                                int change = pay - total;
+                                                macam.write("Thank you");
+                                                cart(total);
+                                                macam.write("---------------");
+                                                macam.write("Change : $" + change);
+                                                atm = atm + change;
+                                                macam.fileCreate("Struk");
+                                                macam.timer(5);
+                                                cart.clear();
+                                                total = 0;
+                                                change = 0;
+                                                break;
+                                            }
+                                            else 
+                                            {
+                                                macam.write("You do not have enough money!");
+                                                macam.timer(3);
+                                                break;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            macam.write("You do not have enough money!");
+                                            macam.timer(3);
+                                            break;
+                                        }
+                                    }
+                                    else if (act3 == 3)
                                     {
                                         break;
                                     }
@@ -220,11 +289,55 @@ public class toko_earphone {
                             }
                             else if (act2 == 2)
                             {
+                                macam.clear();
+                                cart(total);
+                                int act3 = macam.inputInt("1. Chechout\n2. Back");
+                                if (act3 == 1)
+                                {
+                                    macam.write("Money : "+ atm);
+                                    int pay = macam.inputInt("Input the amount you want to pay : ");
+                                    if (atm >= pay)
+                                    {
+                                        atm = atm - pay;
+                                        if (pay >= total)
+                                        {
+                                            int change = pay - total;
+                                            macam.write("Thankyou");
+                                            cart(total);
+                                            macam.write("---------------");
+                                            macam.write("Change : $" + change);
+                                            atm = atm + change;
+                                            macam.fileCreate("struk");
+                                            macam.timer(5);
+                                            total = 0;
+                                            change = 0;
+                                            cart.clear();
+                                        }
+                                        else 
+                                        {
+                                            macam.write("You do not have enough money!");
+                                            macam.timer(3);
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        macam.write("You do not have enough money!");
+                                        macam.timer(3);
+                                        break;
+                                    }
+                                }
+                                else if (act3 == 2)
+                                {
+                                    break;
+                                }
+                            }
+                            else if (act2 == 3)
+                            {
                                 break;
                             }                           
                         }
                     }
-
                     else if (act1 == 3)
                     {
                         break;

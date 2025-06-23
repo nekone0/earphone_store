@@ -1,4 +1,6 @@
 import java.util.*;
+import java.io.*;
+
 public class macam {
     static Scanner a = new Scanner(System.in);
 
@@ -15,6 +17,7 @@ public class macam {
         Integer angka = a.nextInt();
         return angka;
     }
+
     static void lanjut()
     {
         a.nextLine();
@@ -32,7 +35,7 @@ public class macam {
         System.out.println(quest);
     }
 
-    static void writeNum(Integer quest)
+    static void writenum(Integer quest)
     {
         System.out.println(quest);
     }
@@ -52,16 +55,25 @@ public class macam {
         }
     }
 
-    public static boolean isStringNull(String s)
+    static String fileCreate(String nama)
     {
-        if (s == null)
-        {
-            return true;
+        String result;
+        try{
+            File fill = new File(nama+".txt");
+            if (fill.createNewFile())
+            {
+                result = "File dibuat";
+            }
+            else{
+                result = "File sudah ada";
+            }
         }
-
-        else
+        catch(IOException e)
         {
-            return false;
+            result = "Error";
         }
+        return result;
     }
+
+
 }

@@ -24,8 +24,9 @@ public class toko_earphone {
         macam.write("---------------");
     }
 
-    public static void cart(int total)
+    public static int cart(int total)
     {
+        int b = 0;
         macam.write("Cart\n-------------------");
         if (cart.size() == 0)
         {
@@ -40,7 +41,9 @@ public class toko_earphone {
                 i++;
             }
             macam.write("Total : $" + total);
+            b = b + total;
         }
+        return b;
     }
     public static void main(String[] args)
     {
@@ -260,7 +263,7 @@ public class toko_earphone {
                                                 macam.write("---------------");
                                                 macam.write("Change : $" + change);
                                                 atm = atm + change;
-                                                macam.fileCreate("Struk");
+                                                macam.strukCreate("struk", total, change, pay, cart);
                                                 macam.timer(5);
                                                 cart.clear();
                                                 total = 0;

@@ -57,22 +57,34 @@ public class macam {
 
     static String fileCreate(String nama)
     {
-        String result;
         try{
-            File fill = new File(nama+".txt");
-            if (fill.createNewFile())
-            {
-                result = "File dibuat";
-            }
-            else{
-                result = "File sudah ada";
-            }
+            FileWriter fill = new FileWriter(nama+".txt");
+            fill.write("ini adalah isi dari " + nama);
+            fill.close();
         }
         catch(IOException e)
         {
-            result = "Error";
+            macam.write("Error");
+            e.printStackTrace();
         }
-        return result;
+        return "File " + nama + "  telah dibuat";
+    }
+    
+    static String strukCreate(String nama, int change, int pay, int total, ArrayList<String> cart)
+    {
+        try{
+            FileWriter fill = new FileWriter(nama+".txt");
+            fill.write("Earphone Store\n");
+            fill.write("==============\n");
+            fill.write(toko_earphone.cart(total));
+            fill.close();
+        }
+        catch(IOException e)
+        {
+            macam.write("Error");
+            e.printStackTrace();
+        }
+        return "File " + nama + "  telah dibuat";
     }
 
 

@@ -6,6 +6,7 @@ public class toko_earphone {
     static ArrayList<String> cart = new ArrayList<String>();
 
     static Scanner a = new Scanner(System.in);
+    static int b = 0;
 
     public static void list()
     {
@@ -24,9 +25,8 @@ public class toko_earphone {
         macam.write("---------------");
     }
 
-    public static int cart(int total)
+    public static void cart(int total)
     {
-        int b = 0;
         macam.write("Cart\n-------------------");
         if (cart.size() == 0)
         {
@@ -43,7 +43,6 @@ public class toko_earphone {
             macam.write("Total : $" + total);
             b = b + total;
         }
-        return b;
     }
     public static void main(String[] args)
     {
@@ -65,9 +64,15 @@ public class toko_earphone {
                         macam.lanjut();
                         while (true)
                         {
-                            toko.add(macam.inputString("Nama earphone : "));
-                            int harga = macam.inputInt("Masukan harga : ");
+                            // toko.add(macam.inputString("Nama earphone : "));
+                            String item = macam.inputString("Nama earphone : ");
+                            toko.add(item);
+                            macam.addStr("barang", item);
+                            int harga = macam.inputInt("Harga : ");
                             price.add(harga);
+                            macam.addInt("harga", harga);
+                            int qty = macam.inputInt("Jumlah barang : ");
+                            macam.addInt("stock", qty);
                             int act2 = macam.inputInt("1. Continue\n2. Exit");
                             if (act2 == 1)
                             {
@@ -80,7 +85,6 @@ public class toko_earphone {
                                 break;
                             }
                         }
-                        
                     }
                     else if (act1 == 2)
                     {
@@ -134,7 +138,8 @@ public class toko_earphone {
                         while (true)
                         {
                             macam.clear();
-                            list();
+                            // list();
+                            macam.showBarang();
                             macam.write("1. Exit");
                             int act2 = macam.inputInt("Press 1 to exit");
                             if (act2 == 1)
@@ -149,10 +154,9 @@ public class toko_earphone {
                         while (true)
                         {
                             macam.clear();
-                            list();
+                            macam.showBarang();
                             int rak = macam.inputInt("Pilih rak yang akan dihilangkan : ");
-                            toko.remove(rak-1);
-                            price.remove(rak-1);
+                            macam.itemRemove("barang","harga", rak);
                             int act2 = macam.inputInt("1. Continue\n2. Exit");
                             if (act2 == 1)
                             {
@@ -257,13 +261,14 @@ public class toko_earphone {
                                             atm = atm - pay;
                                             if (pay >= total)
                                             {
+                                                macam.clear();
                                                 int change = pay - total;
                                                 macam.write("Thank you");
                                                 cart(total);
                                                 macam.write("---------------");
                                                 macam.write("Change : $" + change);
                                                 atm = atm + change;
-                                                macam.strukCreate("struk", total, change, pay, cart);
+                                                macam.strukCreate("struk", change, pay, total, cart);
                                                 macam.timer(5);
                                                 cart.clear();
                                                 total = 0;
@@ -304,13 +309,15 @@ public class toko_earphone {
                                         atm = atm - pay;
                                         if (pay >= total)
                                         {
+
+                                            macam.clear();
                                             int change = pay - total;
                                             macam.write("Thankyou");
                                             cart(total);
                                             macam.write("---------------");
                                             macam.write("Change : $" + change);
                                             atm = atm + change;
-                                            macam.fileCreate("struk");
+                                            macam.strukCreate("struk", change, pay, total, cart);
                                             macam.timer(5);
                                             total = 0;
                                             change = 0;
@@ -346,9 +353,6 @@ public class toko_earphone {
                         break;
                     }
                 }
-                
-
-
             }
         }
         

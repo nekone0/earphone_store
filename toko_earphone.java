@@ -237,9 +237,10 @@ public class toko_earphone {
                                 {
                                     macam.clear();
                                     macam.write("Money : $"+atm);
-                                    list();
+                                    macam.showBarang();
                                     int rak = macam.inputInt("Pilih rak yang akan dibeli : ");
-                                    total = total + price.get(rak-1);
+                                    int amt = macam.inputInt("Masukkan jumlah barang : ");
+                                    total = total + ;
                                     String i_p = Integer.toString(price.get(rak-1));
                                     cart.add(toko.get(rak-1));
                                     cart.add(i_p);

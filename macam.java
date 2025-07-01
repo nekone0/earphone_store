@@ -113,6 +113,7 @@ public class macam {
             Scanner a_file_1 = new Scanner(cari_1);
             Scanner a_file_2 = new Scanner(cari_2);
             Scanner a_file_3 = new Scanner(cari_3);
+            ArrayList<ArrayList<Object>> x = new ArrayList<ArrayList<Object>>();
             int a = 1;
             while (a_file_1.hasNextLine())
             {
@@ -121,6 +122,8 @@ public class macam {
                 String data_3 = a_file_3.nextLine();
                 macam.write(a + ". " + data_1 + " - $" + data_2 + " | Stock : " + data_3);
                 a++;
+                x.get(0).add(data_1);
+                x.add(new ArrayList<Object>());
             }
         }
 
@@ -284,6 +287,39 @@ public class macam {
         return "File " + nama + "  telah dibuat";
     }
     
-    // static 
+    static void updateStock(int rak, int amt)
+    {
+        try
+        {
+            File cari_1 = new File("stock.txt");
+            Scanner file = new Scanner(cari_1);
+            ArrayList<String> stock = new ArrayList();
+
+            while (file.hasNextLine())
+            {
+                String item_stock = file.nextLine();
+                stock.add(item_stock);
+            }
+            file.close();
+
+            int update = Integer.parseInt(stock.get(rak-1));
+            update=update-amt;
+            stock.set(rak-1, Integer.toString(update));
+
+            FileWriter ipt = new FileWriter("stock.txt");
+            for (int b = 0; b<stock.size();b++)
+            {
+                ipt.write(stock.get(b)+"\n");
+            }
+            ipt.close();
+
+
+        }
+        catch(IOException e)
+        {
+            macam.write("Error");
+            e.printStackTrace();
+        }
+    }
 
 }

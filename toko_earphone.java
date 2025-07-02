@@ -1,29 +1,11 @@
 import java.util.*;
 
 public class toko_earphone {
-    static ArrayList<String> toko = new ArrayList<String>();
-    static ArrayList<Integer> price = new ArrayList<Integer>();
     static ArrayList<String> cart = new ArrayList<String>();
+    static ArrayList<ArrayList<String>> x = new ArrayList<ArrayList<String>>();
 
     static Scanner a = new Scanner(System.in);
     static int b = 0;
-
-    public static void list()
-    {
-        macam.write("Inventory\n---------------");
-        if (toko.size() == 0)
-        {
-            macam.write("Kosong");
-        }
-        else
-        {
-            for (int a = 0; a < toko.size(); a++)
-            {
-                macam.write((a+1)+ ". " + toko.get(a) + " - $" + price.get(a));
-            }
-        }
-        macam.write("---------------");
-    }
 
     public static void cart(int total)
     {
@@ -35,9 +17,9 @@ public class toko_earphone {
         else
         {
             int i = 1;
-            for (int a = 0; a < cart.size(); a = a+2)
+            for (int a = 0; a < cart.size(); a = a+3)
             {
-                macam.write((i) + ". " + cart.get(a) + " - $" + cart.get(a+1));
+                macam.write((i) + ". " + cart.get(a) + " - $" + cart.get(a+1) + " | Amount : " + cart.get(a+2));
                 i++;
             }
             macam.write("Total : $" + total);
@@ -66,10 +48,8 @@ public class toko_earphone {
                         {
                             // toko.add(macam.inputString("Nama earphone : "));
                             String item = macam.inputString("Nama earphone : ");
-                            toko.add(item);
                             macam.addStr("barang", item);
                             int harga = macam.inputInt("Harga : ");
-                            price.add(harga);
                             macam.addInt("harga", harga);
                             int qty = macam.inputInt("Jumlah barang : ");
                             macam.addInt("stock", qty);
@@ -92,17 +72,19 @@ public class toko_earphone {
                         while (true)
                         {
                             macam.clear();
-                            list();
-                            macam.write("1. Ganti item\n2. Ganti harga");
+                            macam.showBarang(x);
+                            macam.write("1. Ganti item\n2. Ganti harga\n3. Ganti stok");
                             int act2 = macam.inputInt("");
                             if (act2 == 1)
                             {
                                 int rak = macam.inputInt("Pilih rak yang akan diganti : ");
                                 macam.lanjut();
                                 String editn = macam.inputString("Input nama baru : ");
-                                toko.set(rak-1, editn);
-                                int editp = macam.inputInt("Input harga baru");
-                                price.set(rak-1, editp);
+                                macam.editItem("barang", rak, editn);
+                                int editp = macam.inputInt("Input harga baru : ");
+                                macam.editNum("harga", rak, editp);
+                                int edits = macam.inputInt("Input stok baru : ");
+                                macam.editNum("stock", rak, edits);
                                 int act3 = macam.inputInt("1. Continue\n2. Exit");
                                 if (act3 == 1)
                                 {
@@ -118,7 +100,23 @@ public class toko_earphone {
                             {
                                 int rak = macam.inputInt("Pilih rak yang akan diganti : ");
                                 int editp = macam.inputInt("Input harga baru");
-                                price.set(rak-1, editp);
+                                macam.editNum("harga", rak, editp);
+                                int act3 = macam.inputInt("1. Continue\n2. Exit");
+                                if (act3 == 1)
+                                {
+                                    macam.clear();
+                                    continue;
+                                }
+                                else if (act3 == 2)
+                                {
+                                    break;
+                                }
+                            }
+                            else if (act2 == 3)
+                            {
+                                int rak = macam.inputInt("Pilih rak yang akan diganti : ");
+                                int edits = macam.inputInt("Input stok baru");
+                                macam.editNum("stock", rak, edits);
                                 int act3 = macam.inputInt("1. Continue\n2. Exit");
                                 if (act3 == 1)
                                 {
@@ -139,7 +137,7 @@ public class toko_earphone {
                         {
                             macam.clear();
                             // list();
-                            macam.showBarang();
+                            macam.showBarang(x);
                             macam.write("1. Exit");
                             int act2 = macam.inputInt("Press 1 to exit");
                             if (act2 == 1)
@@ -154,9 +152,9 @@ public class toko_earphone {
                         while (true)
                         {
                             macam.clear();
-                            macam.showBarang();
+                            macam.showBarang(x);
                             int rak = macam.inputInt("Pilih rak yang akan dihilangkan : ");
-                            macam.itemRemove("barang","harga", rak);
+                            macam.itemRemove("barang","harga", "stock", rak);
                             int act2 = macam.inputInt("1. Continue\n2. Exit");
                             if (act2 == 1)
                             {
@@ -237,14 +235,30 @@ public class toko_earphone {
                                 {
                                     macam.clear();
                                     macam.write("Money : $"+atm);
-                                    macam.showBarang();
+                                    macam.showBarang(x);
                                     int rak = macam.inputInt("Pilih rak yang akan dibeli : ");
                                     int amt = macam.inputInt("Masukkan jumlah barang : ");
-                                    total = total + ;
-                                    String i_p = Integer.toString(price.get(rak-1));
-                                    cart.add(toko.get(rak-1));
-                                    cart.add(i_p);
-
+                                    int byr = Integer.parseInt(x.get(rak-1).get(1));
+                                    
+                                    int available = Integer.parseInt(x.get(rak-1).get(2));
+                                    if (available == 0)
+                                    {
+                                        macam.write("Maaf, barang ini kosong!");
+                                        macam.timer(3);
+                                        break;
+                                    }
+                                    else if (available < amt)
+                                    {
+                                        macam.write("Maaf, stock tidak cukup!");
+                                        macam.timer(3);
+                                        break;
+                                    }
+                                    macam.updateStock(rak, amt);
+                                    macam.writenum(byr);
+                                    total = total + byr*amt;
+                                    cart.add(x.get(rak-1).get(0));
+                                    cart.add(x.get(rak-1).get(1));
+                                    cart.add(Integer.toString(amt));
                                     cart(total);
 
                                     int act3 = macam.inputInt("1. Continue\n2. Checkout\n3. Exit");
